@@ -1,21 +1,26 @@
-import argparse
+import configparser
 import random
 from exam import Exam
 import question_parser
 import time
 
 
-def main(args):
-    random.seed(args.seed)
-    VERBOSE = args.verbose
-    GROUPS = args.categories
-    NUM_QUESTIONS = args.no_questions
-    NUM_ANSWERS = args.no_options
-    QUESTION_FILE = args.question_file
-    NUM_EXAMS = args.no_exams
-    SHUFFLE_QS = args.shuffle_questions
-    SHUFFLE_ANS = args.shuffle_options
-    EXAM_LENGTH = args.no_pages
+def main():
+    config = configparser.ConfigParser()
+    config.read('config.txt')
+    args = config["exam_generation"]
+    exam_design_args = config["exam_design"]
+    random.seed(int(args["SEED"]))
+    VERBOSE = bool(args["VERBOSE"])
+    GROUPS = bool(args["CATEGORIZE_QUESTIONS"])
+    NUM_QUESTIONS = int(args["NUMBER_OF_QUESTIONS"])
+    SAMPLE = bool(args["RANDOM_SAMPLING"])
+    QUESTION_FILE = args["QUESTION_FILE"]
+    NUM_EXAMS = int(args["NUMBER_OF_EXAMS"])
+    SHUFFLE_QS = bool(args["SHUFFLE_QUESTIONS"])
+    SHUFFLE_ANS = bool(args["SHUFFLE_OPTIONS"])
+    EXAM_LENGTH = int(args["PAGES"])
+    ANS = bool(args["GENERATE_ANSWERS"])
 
     questions, categories = question_parser.parse_question_file(QUESTION_FILE)
 
@@ -45,9 +50,13 @@ def main(args):
         exam_qs = []
 
         for category in questions_grouped:
-            exam_qs.extend(random.sample(questions_grouped[category], questions_per_category))
+            # select random subset
+            if SAMPLE:
+                exam_qs.extend(sorted(random.sample(questions_grouped[category], questions_per_category), key=lambda x: x.id))
+            else:
+                exam_qs.extend(questions_grouped[category][:questions_per_category])
 
-        ex = Exam(exam_qs, EXAM_LENGTH)
+        ex = Exam(exam_qs, exam_design_args, EXAM_LENGTH)
 
         # optionally shuffle question answer order
         if SHUFFLE_ANS:
@@ -61,6 +70,8 @@ def main(args):
         start = time.time()
         ex.generate_pdf()
         ex.export_answers_to_csv()
+        if ANS:
+            ex.generate_pdf_answer_reference()
         end = time.time()
 
         if VERBOSE:
@@ -68,27 +79,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Python multiple choise exam generator')
-    parser.add_argument('question_file', type=str,
-                        help='the path of the question file')
-    parser.add_argument('--no_exams', type=int, default=1,
-                        help='number of the generated exams')
-    parser.add_argument('--no_options', type=int, default=4,
-                        help='the number of the possible options to select')
-    parser.add_argument('--no_questions', type=int, default=30,
-                        help='number of questions in the exam')
-    parser.add_argument('--seed', type=int, default=0,
-                        help='the seed for the exam generation')
-    parser.add_argument('-v', "--verbose", action="store_true", default=False,
-                        help='the seed for the exam generation')
-    parser.add_argument('-s', '--shuffle_questions', action="store_true", default=False,
-                        help='display questions in random order, other than the input order')
-    parser.add_argument('-S', '--shuffle_options', action="store_true", default=False,
-                        help='display question options in random order, other than the input order')
-    parser.add_argument('-c', '--categories', action="store_true",
-                        help='the number of question types in an exam, if 0, no categorization is made')
-    parser.add_argument('--no_pages', type=int, default=None,
-                        help='the page length of the exam, could help have similar exam format. '
-                             'If 0, variable length instead')
-    args = parser.parse_args()
-    main(args)
+    main()
