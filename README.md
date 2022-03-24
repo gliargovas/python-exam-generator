@@ -38,7 +38,7 @@ The exam generator's properties are specified in the `./config.txt` file, locate
 
 All the fields in the configuration file follow the below format:
 
-    <FIELD>=<VALUE>
+    <FIELD>=<VALUE> or <FIELD>:<VALUE>
 
 The configutation file is split into two sections and consists of the following options:
 
