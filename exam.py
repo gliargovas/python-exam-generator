@@ -119,7 +119,8 @@ class Exam():
                 pdf.set_y(140)
                 pdf.cell(190, 10, txt="Blank Page",
                          ln=2, align='C')
-
+        if not os.path.exists("exams/pdfs/"):
+            os.makedirs("exams/pdfs/")
         pdf.output("exams/pdfs/{:03d}_exam.pdf".format(self.id))
 
     def generate_pdf_answer_reference(self):
@@ -172,7 +173,8 @@ class Exam():
                 pdf.set_y(140)
                 pdf.cell(190, 10, txt="Blank Page",
                          ln=2, align='C')
-
+        if not os.path.exists("exams/ans_pdf/"):
+            os.makedirs("exams/ans_pdf/")
         pdf.output("exams/ans_pdf/{:03d}_exam_ans.pdf".format(self.id))
 
     def create_question_text(self, index):
