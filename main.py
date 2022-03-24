@@ -1,8 +1,9 @@
 import configparser
 import random
-from exam import Exam
-import question_parser
 import time
+
+import question_parser
+from exam import Exam
 
 
 def main():
@@ -52,7 +53,8 @@ def main():
         for category in questions_grouped:
             # select random subset
             if SAMPLE:
-                exam_qs.extend(sorted(random.sample(questions_grouped[category], questions_per_category), key=lambda x: x.id))
+                exam_qs.extend(
+                    sorted(random.sample(questions_grouped[category], questions_per_category), key=lambda x: x.id))
             else:
                 exam_qs.extend(questions_grouped[category][:questions_per_category])
 
@@ -75,7 +77,7 @@ def main():
         end = time.time()
 
         if VERBOSE:
-            print(f"Time to generate exam {ex.id}: {end-start}")
+            print(f"Time to generate exam {ex.id}: {end - start}")
 
 
 if __name__ == '__main__':
