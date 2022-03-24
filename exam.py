@@ -213,4 +213,4 @@ class Exam():
                 os.makedirs("exams/answers/")
             with open(filename, "w") as outfile:
                 for question in self.questions:
-                    outfile.write("{} {}\n".format(question.id, question.correct))
+                    outfile.write("{},{}\n".format(question.id, question.correct))
