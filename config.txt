@@ -1,0 +1,34 @@
+# Exam design fields
+[exam_design]
+LOGO_FILE_PATH=data/aueb_logo.jpg
+INSTITUTION=Athens University of Economics and Business
+DEPARTMENT=Department of Management Science & Technology
+COURSE=Introduction to Computer Science
+FIELD_1=Name
+FIELD_2=Surname
+FIELD_3=Student ID
+INSTRUCTIONS:Fill in all your answers on the answer sheet, along with your ID and exam number which you can find at the top-left of this page. Attention: if for example your exam number is exam_001, you must blacken the first two zeros. Use dark blue or black pen, not pencil and fill the whole frame well. Each question has one (1) correct answer. For each correct question you earn one (1) point while for each wrong answer, you are deducted 0.25 points. If a question is not answered, your score is not negatively affected.
+INSTRUCTION_HEADING: Instructions:
+DURATION_INSTRUCTION:Duration: 120 minutes
+QUESTION_TEXT=Question
+NUMBERING=Latin
+# Numbering can either be "Numeric" (1, 2, 3, 4, ...)
+#                         "Alphanumeric" (A, B, C, D, ...)
+#                         "Latin" (I, II, III, IV, ...)
+
+
+# Exam generation fields
+[exam_generation]
+QUESTION_FILE=data/questions.csv
+NUMBER_OF_EXAMS=1
+NUMBER_OF_QUESTIONS=6
+SHUFFLE_OPTIONS=False
+SHUFFLE_QUESTIONS=False
+RANDOM_SAMPLING=False
+CATEGORIZE_QUESTIONS=False
+GENERATE_ANSWERS=False
+PAGES=0
+SEED=0
+VERBOSE=True
+
+
